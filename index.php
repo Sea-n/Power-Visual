@@ -8,11 +8,10 @@
 </head>
 <body>
 	<div class="container">
+		<h2>電量視覺化</h2>
+
 		<form id="query">
 			<input type="submit">
-
-			<h2>電量視覺化</h2>
-
 			<select>
 				<option>選擇一個縣市</option>
 				<option></option>
