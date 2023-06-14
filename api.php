@@ -8,7 +8,13 @@ $result = [
 
 header('Content-Type: application/json');
 
+$year = $_GET['year'] ?? 110;
+$month = $_GET['month'] ?? 1;
+$sqlQuery = "SELECT * FROM `table_name` WHERE `year` = $year AND `month` = $month";
+
 echo json_encode([
 	'ok' => true,
-	'result' => $result,
+	'result' => [
+		'sqlQuery' => $sqlQuery,
+	]
 ], JSON_PRETTY_PRINT);
