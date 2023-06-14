@@ -91,13 +91,17 @@
 	<script src="assets/js/city-selector.js"></script>
 
 	<style>
-	table, th, td {
-		border: 1px solid black;
-		border-collapse: collapse;
-	}
+		table, th, td {
+			border: 1px white solid;
+			border-collapse: collapse;
+		}
+		.center{
+			margin-left: auto;
+			margin-right: auto;
+		}
 	</style>
-	
-	<table>
+
+	<table class="center">
 		<tr>
 			<th>年份</th>
 			<th>月份</th>
