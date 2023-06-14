@@ -8,8 +8,8 @@ $result = [
 
 header('Content-Type: application/json');
 
-$year = $_POST['year'] ;
-$month = $_POST['month'] ;
+$year = intval($_POST['year']) ;
+$month = intval($_POST['month'] );
 $city = $_POST['city'] ;
 $district = $_POST['dist'] ;
 $choice = $_POST['choice'] ;
@@ -36,8 +36,10 @@ switch($choice){
 
 if($year != "" && $month != "" && $table_name == "electricity_by_village")
 	$sqlQuery = "SELECT * FROM electricity_by_village JOIN zip_map ON electricity_by_village.zip_code = zip_map.zip_code WHERE `year` = $year AND `month` = $month";
+else if ($year != "" && $month != "" && $table_name == "industry_per")
+	$sqlQuery = "SELECT * FROM industry_per WHERE `year` = $year AND `month` = $month AND 'city' = $city AND 'dist' = $district";
 else if($year != "" && $month != "")
-	$sqlQuery = "SELECT * FROM $table_name WHERE `year` = $year AND `month` = $month AND 'city' = $city AND 'district' = $district";
+	$sqlQuery = "SELECT * FROM $table_name WHERE `year` = $year AND `month` = $month AND 'city' = $city AND 'dist' = $district";
 else
 	$sqlQuery = "SELECT * FROM $table_name WHERE `year` = 110 AND `month` = 1"; // default?
 

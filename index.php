@@ -89,5 +89,29 @@
 	</div>
 	<script src="assets/js/main.js"></script>
 	<script src="assets/js/city-selector.js"></script>
+
+	<style>
+	table, th, td {
+		border: 1px solid black;
+		border-collapse: collapse;
+	}
+	</style>
+	
+	<table>
+		<tr>
+			<th>年份</th>
+			<th>月份</th>
+			<th>縣市</th>
+			<th>鄉鎮市區</th>
+			<th>用電量</th>
+		</tr>
+		<tr>
+			<td>2020</td>
+			<td>1</td>
+			<td>台北市</td>
+			<td>中正區</td>
+			<td>123456</td>
+		</tr>
+	</table>
 </body>
 </html>
