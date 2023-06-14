@@ -42,7 +42,8 @@ switch($choice){
 
 if($year != "" && $month != "" && $dist != "" && $table_name == "by_type"){
 	$sql = "SELECT * FROM `by_type` JOIN `zip_map`
-	ON `by_type.zip_code = zip_map.zip_code` WHERE `year` = ':year' AND `month` = ':month' AND `dist` = ':dist'";
+	ON `by_type`.`zip_code` = `zip_map`.`zip_code`
+	WHERE `year` = :year AND `month` = :month AND `dist` = :dist";
 	$stmt = $pdo->prepare($sql);
     $stmt->execute([
         'year' => $year,
@@ -55,7 +56,7 @@ if($year != "" && $month != "" && $dist != "" && $table_name == "by_type"){
     }
 }
 else if($year != "" && $month != "" && $city != "" && $table_name == "by_industry"){
-	$sql = "SELECT * FROM `by_industry` WHERE `year` = ':year' AND `month` = ':mont'h AND 'city' = ':city'";
+	$sql = "SELECT * FROM `by_industry` WHERE `year` = :year AND `month` = :month AND 'city' = :city";
 	$stmt = $pdo->prepare($sql);
     $stmt->execute([
         'year' => $year,
@@ -63,30 +64,30 @@ else if($year != "" && $month != "" && $city != "" && $table_name == "by_industr
         'city' => $city,
     ]);
 	$results = [];
-    while ($item = $stmt->fetch()) {
+    while ($item = $stmt->fetchAll()) {
 	    $results[] = $item;
     }
 }
 else if($year != "" && $table_name == "overview"){
-	$sql = "SELECT * FROM `overview` WHERE `year` = ':year'";
+	$sql = "SELECT * FROM `overview` WHERE `year` = :year";
 	$stmt = $pdo->prepare($sql);
     $stmt->execute([
         'year' => $year,
     ]);
 	$results = [];
-    while ($item = $stmt->fetch()) {
+    while ($item = $stmt->fetchAll()) {
 	    $results[] = $item;
     }
 }
 else if($year != "" && $month != "" && $table_name == "prediction"){
-	$sql = "SELECT * FROM `prediction` WHERE `year` = ':year' AND `month` = ':month'";
+	$sql = "SELECT * FROM `prediction` WHERE `year` = :year AND `month` = :month";
 	$stmt = $pdo->prepare($sql);
     $stmt->execute([
         'year' => $year,
         'month' => $month,
     ]);
 	$results = [];
-    while ($item = $stmt->fetch()) {
+    while ($item = $stmt->fetchAll()) {
 	    $results[] = $item;
     }
 }
@@ -99,7 +100,7 @@ else{
     ]);
 
     $results = [];
-    while ($item = $stmt->fetch()) {
+    while ($item = $stmt->fetchAll()) {
 	    $results[] = $item;
     }
 }
