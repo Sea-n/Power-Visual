@@ -51,7 +51,7 @@ if($year != "" && $month != "" && $dist != "" && $table_name == "by_type"){
         'dist' => $dist,
     ]);
 	$results = [];
-    while ($item = $stmt->fetch()) {
+    while ($item = $stmt->fetchAll()) {
 	    $results[] = $item;
     }
 }
