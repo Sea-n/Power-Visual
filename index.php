@@ -109,13 +109,30 @@
 			<th>鄉鎮市區</th>
 			<th>用電量</th>
 		</tr>
-		<tr>
-			<td>2020</td>
-			<td>1</td>
-			<td>台北市</td>
-			<td>中正區</td>
-			<td>123456</td>
-		</tr>
+		
+		<script>
+			while($result = mysqli_fetch_array($r, MYSQLI_ASSOC)){
+				echo "<tr>";
+				echo "<td>".$result['year']."</td>";
+				echo "<td>".$result['month']."</td>";
+				echo "<td>".$result['city']."</td>";
+				echo "<td>".$result['dist']."</td>";
+				echo "<td>".$result['power']."</td>";
+				echo "</tr>";
+			}
+
+			if($result == null){
+				<tr>
+					<td>2020</td>
+					<td>1</td>
+					<td>台北市</td>
+					<td>中正區</td>
+					<td>輸入資料不齊全</td>
+				</tr>
+			}
+		</script>
+
+		
 	</table>
 	
 	<br>
@@ -132,6 +149,22 @@
 			<th>第二級產業</th>
 			<th>第三級產業(服務業)</th>
 		</tr>
+
+		<script>
+			while($result = mysqli_fetch_array($r, MYSQLI_ASSOC)){
+				echo "<tr>";
+				echo "<td>".$result['year']."</td>";
+				echo "<td>".$result['month']."</td>";
+				echo "<td>".$result['city']."</td>";
+				echo "<td>".$result['total_usage']."</td>";
+				echo "<td>".$result['city_rate']."</td>";
+				echo "<td>".$result['resident']."</td>";
+				echo "<td>".$result['service']."</td>";
+				echo "<td>".$result['first_industry']."</td>";
+				echo "<td>".$result['second_industry']."</td>";
+				echo "</tr>";
+			}
+		</script>
 	</table>
 </body>
 </html>
