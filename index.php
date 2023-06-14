@@ -117,5 +117,21 @@
 			<td>123456</td>
 		</tr>
 	</table>
+	
+	<br>
+
+	<table class="center">
+		<tr>
+			<th>年份</th>
+			<th>月份</th>
+			<th>縣市</th>
+			<th>縣市用電占比</th>
+			<th>合計售電量</th>
+			<th>住宅部分</th>
+			<th>第一級產業</th>
+			<th>第二級產業</th>
+			<th>第三級產業(服務業)</th>
+		</tr>
+	</table>
 </body>
 </html>
