@@ -13,10 +13,11 @@ cd dataset/
 
 for f in *.csv; do
 echo "Loading $f..."
-echo "load data local infile './$f'
+echo "SET GLOBAL local_infile=1;
+load data local infile './$f'
 into table ${f/.csv/}
 fields terminated by ','
 enclosed by '\"'
 lines terminated by '\n'
-ignore 1 lines;" | mysql "$name"
+ignore 1 lines;" | mysql "$name" --local-infile=1
 done

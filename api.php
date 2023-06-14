@@ -1,4 +1,10 @@
 <?php
+require_once('config.php');
+
+$pdo = new PDO('mysql:host=localhost;dbname=xnctu', 'xnctu', MYSQL_PASSWORD);
+$pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
+$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
 $data = file_get_contents('php://input');
 $data = json_decode($data, true);
 
@@ -48,6 +54,15 @@ else if($year != "" && $month != "")
 else
 	$sqlQuery = "SELECT * FROM $table_name WHERE `year` = 110 AND `month` = 1"; // default?
 
+$stmt = $pdo->prepare($sql);
+$stmt->execute([
+	'year' => $year,
+]);
+
+$results = [];
+while ($item = $stmt->fetch()) {
+	$results[] = $item;
+}
 
 echo json_encode([
 	'ok' => true,
