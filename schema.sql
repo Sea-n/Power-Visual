@@ -44,7 +44,7 @@ DROP TABLE IF EXISTS prediction;
 CREATE TABLE prediction (
 	year INT,
 	month INT,
-	period ENUM ('early', 'middle', 'late'),
+	period ENUM ('early', 'mid', 'late'),
 	capacity FLOAT,
 	`load` FLOAT
 );
