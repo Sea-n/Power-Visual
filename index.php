@@ -16,7 +16,7 @@
 			<div class="ts-grid is-4-columns is-relaxed">
 				<div class="column">
 					<label for="year">年份</label>
-					<select id="year" class="ts-select">
+					<select id="year" class="ts-select" name="year">
 						<option>2023</option>
 						<option>2022</option>
 						<option>2021</option>
@@ -32,7 +32,7 @@
 
 				<div class="column">
 					<label for="month">月份</label>
-					<select id="month" class="ts-select">
+					<select id="month" class="ts-select" name="month">
 						<option>1</option>
 						<option>2</option>
 						<option>3</option>
@@ -50,7 +50,7 @@
 
 				<div class="column">
 					<label for="city">縣市</label>
-					<select id="city" class="ts-select">
+					<select id="city" class="ts-select" name="city">
 						<option>台北市</option>
 						<option>基隆市</option>
 						<option>新北市</option>
@@ -78,7 +78,7 @@
 
 				<div class="column">
 					<label for="dist">鄉鎮市區</label>
-					<select id="dist" class="ts-select">
+					<select id="dist" class="ts-select" name="dist">
 						<option value="" disabled>請先選擇縣市</option>
 					</select>
 				</div>
