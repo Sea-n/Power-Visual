@@ -1,24 +1,39 @@
 <?php
 require_once('config.php');
 
-$pdo = new PDO('mysql:host=localhost;dbname=xnctu', 'xnctu', MYSQL_PASSWORD);
+/* Database connection */
+$pdo = new PDO('mysql:host=' . DB_HOST . ';dbname=' . DB_DATABASE, DB_USERNAME, DB_PASSWORD);
 $pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
 $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
+/* Input data */
 $data = file_get_contents('php://input');
 $data = json_decode($data, true);
 
-$result = [
-	'date' => $data['year'],
-];
+$year = $data['year'];
+$month = $data['month'];
+$city = $data['city'];
+$dist = $data['dist'];
 
+/* Output result */
 header('Content-Type: application/json');
+$results = [];
 
-$year = intval($_POST['year']) ;
-$month = intval($_POST['month'] );
-$city = $_POST['city'] ;
-$district = $_POST['dist'] ;
-$choice = $_POST['choice'] ;
+/* Check zipcode */
+$sql = "SELECT zipcode FROM zipcode
+	WHERE city = :city AND dist = :dist";
+$stmt = $pdo->prepare($sql);
+$stmt->execute([
+	'city' => $city,
+	'dist' => $dist,
+]);
+$zipcode = $stmt->fetch();
+if (!$zipcode)
+	exit(json_encode([
+		'ok' => false,
+		'msg' => 'Cannot find zipcode.'
+	], JSON_PRETTY_PRINT));
+$zipcode = $zipcode['zipcode'];
 
 switch($choice){
 	case 1:
@@ -38,7 +53,7 @@ switch($choice){
 		break;
 }
 
-echo "年<br>";
+
 
 if($year != "" && $month != "" && $dist != "" && $table_name == "by_type"){
 	$sql = "SELECT * FROM `by_type` JOIN `zip_map`
@@ -54,14 +69,7 @@ if($year != "" && $month != "" && $dist != "" && $table_name == "by_type"){
     while ($item = $stmt->fetchAll()) {
 	    $results[] = $item;
     }
-	echo $year;
-	echo "年<br>";
-	echo $month;
-	echo "月<br>";
-	echo $dist;
-	echo "區<br>";
 }
-
 else if($year != "" && $month != "" && $city != "" && $table_name == "by_industry"){
 	$sql = "SELECT * FROM `by_industry` WHERE `year` = :year AND `month` = :month AND 'city' = :city";
 	$stmt = $pdo->prepare($sql);
@@ -78,44 +86,23 @@ else if($year != "" && $month != "" && $city != "" && $table_name == "by_industr
 else if($year != "" && $table_name == "overview"){
 	$sql = "SELECT * FROM `overview` WHERE `year` = :year";
 	$stmt = $pdo->prepare($sql);
-    $stmt->execute([
-        'year' => $year,
-    ]);
-	$results = [];
-    while ($item = $stmt->fetchAll()) {
-	    $results[] = $item;
-    }
-}
-else if($year != "" && $month != "" && $table_name == "prediction"){
-	$sql = "SELECT * FROM `prediction` WHERE `year` = :year AND `month` = :month";
+	$stmt->execute();
+	$results['prediction'] = $stmt->fetchAll();
+} else {  // Past year
+	$sql = "SELECT * FROM overview WHERE year = :year";
 	$stmt = $pdo->prepare($sql);
-    $stmt->execute([
-        'year' => $year,
-        'month' => $month,
-    ]);
-	$results = [];
-    while ($item = $stmt->fetchAll()) {
-	    $results[] = $item;
-    }
-}
-else{
-	$sql = "SELECT * FROM `prediction` WHERE `year` = 2020 AND `month` = 1"; // default?
+	$stmt->execute([
+		'year' => $year,
+	]);
+	$results['overview'] = $stmt->fetch();
+	if ($results['overview'] === false)
+		unset($results['overview']);
+}  // if ($year == date("Y"))
 
-    $stmt = $pdo->prepare($sql);
-    $stmt->execute([
-	    'year' => $year,
-    ]);
 
-    $results = [];
-    while ($item = $stmt->fetchAll()) {
-	    $results[] = $item;
-    }
-}
-
+/* Return data */
 echo json_encode([
 	'ok' => true,
-	'result' => [
-		'sqlQuery' => $sqlQuery,
-	]
+	'results' => $results
 ], JSON_PRETTY_PRINT);
 ?>

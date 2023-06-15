@@ -25,8 +25,6 @@
 						<option>2018</option>
 						<option>2017</option>
 						<option>2016</option>
-						<option>2015</option>
-						<option>2014</option>
 					</select>
 				</div>
 
@@ -51,6 +49,7 @@
 				<div class="column">
 					<label for="city">縣市</label>
 					<select id="city" class="ts-select" name="city">
+						<option value="" disabled selected>請選擇縣市</option>
 						<option>台北市</option>
 						<option>基隆市</option>
 						<option>新北市</option>
@@ -86,36 +85,72 @@
 				<input type="submit" class="ts-button is-fluid">
 			</div>
 		</form>
+
+		<div id="results">
+			<div id="industry" style="display: none;">
+				<h2>產業別</h2>
+				<table class="ts-table is-relaxed">
+					<thead>
+						<tr><th>行業</th><th>用電量</th></tr>
+					</thead>
+					<tbody>
+						<tr><td>住宅部門</td><td id="industry-resident">...</td></tr>
+						<tr><td>服務業</td><td id="industry-service">...</td></tr>
+						<tr><td>農林漁牧</td><td id="industry-first_industry">...</td></tr>
+						<tr><td>工業</td><td id="industry-second_industry">...</td></tr>
+						<tr><td>總計</td><td id="industry-total_usage">...</td></tr>
+						<tr><td>縣市佔比</td><td id="industry-city_rate">...</td></tr>
+					</tbody>
+				</table>
+			</div>
+
+			<div id="type" style="display: none;">
+				<h2>各類排行</h2>
+				<table class="ts-table is-relaxed">
+					<thead>
+						<tr><th>排名</th><th>類別</th><th>用電量</th></tr>
+					</thead>
+					<tbody>
+						<tr><td>1</td><td id="type-0-type">...</td><td id="type-0-usage">...</td></tr>
+						<tr><td>2</td><td id="type-1-type">...</td><td id="type-1-usage">...</td></tr>
+						<tr><td>3</td><td id="type-2-type">...</td><td id="type-2-usage">...</td></tr>
+						<tr><td>4</td><td id="type-3-type">...</td><td id="type-3-usage">...</td></tr>
+						<tr><td>5</td><td id="type-4-type">...</td><td id="type-4-usage">...</td></tr>
+					</tbody>
+				</table>
+			</div>
+
+			<div id="prediction" style="display: none;">
+				<h2>未來預估</h2>
+				<table class="ts-table is-relaxed">
+					<thead>
+						<tr><th>日期</th><th>預估淨尖峰供電能力</th><th>預估瞬時尖峰負載</th></tr>
+					</thead>
+					<tbody>
+						<tr><td id="prediction-0-date">...</td><td id="prediction-0-capacity">...</td><td id="prediction-0-load">...</td></tr>
+						<tr><td id="prediction-1-date">...</td><td id="prediction-1-capacity">...</td><td id="prediction-1-load">...</td></tr>
+						<tr><td id="prediction-2-date">...</td><td id="prediction-2-capacity">...</td><td id="prediction-2-load">...</td></tr>
+						<tr><td id="prediction-3-date">...</td><td id="prediction-3-capacity">...</td><td id="prediction-3-load">...</td></tr>
+						<tr><td id="prediction-4-date">...</td><td id="prediction-4-capacity">...</td><td id="prediction-4-load">...</td></tr>
+						<tr><td id="prediction-5-date">...</td><td id="prediction-5-capacity">...</td><td id="prediction-5-load">...</td></tr>
+					</tbody>
+				</table>
+			</div>
+
+			<div id="overview" style="display: none;">
+				<h2>年度數據</h2>
+				<table class="ts-table is-relaxed">
+					<thead>
+						<tr><th>尖峰日期</th><th>尖峰供電能力</th><th>瞬時尖峰負載</th></tr>
+					</thead>
+					<tbody>
+						<tr><td id="overview-peak">...</td><td id="overview-capacity">...</td><td id="overview-load">...</td></tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
 	</div>
 	<script src="assets/js/main.js"></script>
 	<script src="assets/js/city-selector.js"></script>
-
-	<style>
-		table, th, td {
-			border: 1px white solid;
-			border-collapse: collapse;
-		}
-		.center{
-			margin-left: auto;
-			margin-right: auto;
-		}
-	</style>
-
-	<table class="center">
-		<tr>
-			<th>年份</th>
-			<th>月份</th>
-			<th>縣市</th>
-			<th>鄉鎮市區</th>
-			<th>用電量</th>
-		</tr>
-		<tr>
-			<td>2020</td>
-			<td>1</td>
-			<td>台北市</td>
-			<td>中正區</td>
-			<td>123456</td>
-		</tr>
-	</table>
 </body>
 </html>
