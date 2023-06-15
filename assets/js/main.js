@@ -1,3 +1,6 @@
+const queryForm = document.getElementById('query');
+queryForm.onsubmit = fetchApi;
+
 function fetchApi() {
 	const year = document.getElementById('year').value;
 	const month = document.getElementById('month').value;
@@ -17,11 +20,17 @@ function fetchApi() {
 		}),
 	}).then(resp => resp.json())
 	.then((resp) => {
-		console.log(resp);
+		if (!resp.ok) {
+			console.error(resp);
+			return;
+		}
+
+		renderResult(resp.results);
 	});
 
 	return false;  // Don't submit the HTML form
 }
 
-const queryForm = document.getElementById('query');
-queryForm.onsubmit = fetchApi;
+function renderResult(results) {
+	console.log(results);
+}

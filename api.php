@@ -19,17 +19,31 @@ $dist = $data['dist'];
 header('Content-Type: application/json');
 $results = [];
 
+/* Check zipcode */
+$sql = "SELECT zipcode FROM zipcode
+	WHERE city = :city AND dist = :dist";
+$stmt = $pdo->prepare($sql);
+$stmt->execute([
+	'city' => $city,
+	'dist' => $dist,
+]);
+$zipcode = $stmt->fetch()['zipcode'] ?? false;
+if (!$zipcode)
+	exit(json_encode([
+		'ok' => false,
+		'msg' => 'Cannot find zipcode.'
+	], JSON_PRETTY_PRINT));
+
 /* By type */
 $sql = "SELECT * FROM by_type
-	JOIN zipcode ON by_type.zipcode = zipcode.zipcode
-	WHERE year = :year AND month = :month AND dist = :dist
+	WHERE year = :year AND month = :month AND zipcode = :zipcode
 	ORDER BY `usage` DESC
 	LIMIT 5";
 $stmt = $pdo->prepare($sql);
 $stmt->execute([
 	'year' => $year,
 	'month' => $month,
-	'dist' => $dist,
+	'zipcode' => $zipcode,
 ]);
 $results['by_type'] = $stmt->fetchAll();
 

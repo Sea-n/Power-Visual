@@ -84,16 +84,6 @@
 					</select>
 				</div>
 
-				<div class="column">
-					<label for="choice">搜尋項目</label>
-					<select id="choice" class="ts-select" name="choice">
-						<option value="1">各縣市查詢</option>
-						<option value="2">產業別查詢</option>
-						<option value="3">overview</option>
-						<option value="4">prediction</option>
-					</select>
-				</div>
-
 				<input type="submit" class="ts-button is-fluid">
 			</div>
 		</form>
