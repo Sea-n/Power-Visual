@@ -38,7 +38,7 @@ switch($choice){
 		break;
 }
 
-
+echo "年<br>";
 
 if($year != "" && $month != "" && $dist != "" && $table_name == "by_type"){
 	$sql = "SELECT * FROM `by_type` JOIN `zip_map`
@@ -54,7 +54,14 @@ if($year != "" && $month != "" && $dist != "" && $table_name == "by_type"){
     while ($item = $stmt->fetchAll()) {
 	    $results[] = $item;
     }
+	echo $year;
+	echo "年<br>";
+	echo $month;
+	echo "月<br>";
+	echo $dist;
+	echo "區<br>";
 }
+
 else if($year != "" && $month != "" && $city != "" && $table_name == "by_industry"){
 	$sql = "SELECT * FROM `by_industry` WHERE `year` = :year AND `month` = :month AND 'city' = :city";
 	$stmt = $pdo->prepare($sql);
@@ -111,3 +118,4 @@ echo json_encode([
 		'sqlQuery' => $sqlQuery,
 	]
 ], JSON_PRETTY_PRINT);
+?>
