@@ -1,113 +1,69 @@
 <?php
 require_once('config.php');
 
-$pdo = new PDO('mysql:host=localhost;dbname=xnctu', 'xnctu', MYSQL_PASSWORD);
+/* Database connection */
+$pdo = new PDO('mysql:host=' . DB_HOST . ';dbname=' . DB_DATABASE, DB_USERNAME, DB_PASSWORD);
 $pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
 $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
+/* Input data */
 $data = file_get_contents('php://input');
 $data = json_decode($data, true);
 
-$result = [
-	'date' => $data['year'],
-];
+$year = $data['year'];
+$month = $data['month'];
+$city = $data['city'];
+$dist = $data['dist'];
 
+/* Output result */
 header('Content-Type: application/json');
+$results = [];
 
-$year = intval($_POST['year']) ;
-$month = intval($_POST['month'] );
-$city = $_POST['city'] ;
-$district = $_POST['dist'] ;
-$choice = $_POST['choice'] ;
+/* By type */
+$sql = "SELECT * FROM by_type
+	JOIN zipcode ON by_type.zipcode = zipcode.zipcode
+	WHERE year = :year AND month = :month AND dist = :dist
+	ORDER BY `usage` DESC
+	LIMIT 5";
+$stmt = $pdo->prepare($sql);
+$stmt->execute([
+	'year' => $year,
+	'month' => $month,
+	'dist' => $dist,
+]);
+$results['by_type'] = $stmt->fetchAll();
 
-switch($choice){
-	case 1:
-		$table_name = "by_type";
-		break;
-	case 2:
-		$table_name = "by_industry";
-		break;
-	case 3:
-		$table_name = "over_view";
-		break;
-	case 4:
-		$table_name = "prediction";
-		break;
-	default:
-		$table_name = "by_type";
-		break;
-}
+/* By industry */
+$sql = "SELECT * FROM by_industry
+	WHERE year = :year AND month = :month AND city = :city";
+$stmt = $pdo->prepare($sql);
+$stmt->execute([
+	'year' => $year,
+	'month' => $month,
+	'city' => $city,
+]);
+$results['by_industry'] = $stmt->fetch();
 
-
-
-if($year != "" && $month != "" && $dist != "" && $table_name == "by_type"){
-	$sql = "SELECT * FROM `by_type` JOIN `zip_map`
-	ON `by_type`.`zip_code` = `zip_map`.`zip_code`
-	WHERE `year` = :year AND `month` = :month AND `dist` = :dist";
+/* Prediction or Overview */
+if ($year == date("Y")) {  // This year
+	$sql = "SELECT * FROM prediction";
 	$stmt = $pdo->prepare($sql);
-    $stmt->execute([
-        'year' => $year,
-        'month' => $month,
-        'dist' => $dist,
-    ]);
-	$results = [];
-    while ($item = $stmt->fetchAll()) {
-	    $results[] = $item;
-    }
-}
-else if($year != "" && $month != "" && $city != "" && $table_name == "by_industry"){
-	$sql = "SELECT * FROM `by_industry` WHERE `year` = :year AND `month` = :month AND 'city' = :city";
+	$stmt->execute([
+		'year' => $year,
+	]);
+	$results['prediction'] = $stmt->fetchAll();
+} else {  // Past year
+	$sql = "SELECT * FROM overview WHERE year = :year";
 	$stmt = $pdo->prepare($sql);
-    $stmt->execute([
-        'year' => $year,
-        'month' => $month,
-        'city' => $city,
-    ]);
-	$results = [];
-    while ($item = $stmt->fetchAll()) {
-	    $results[] = $item;
-    }
-}
-else if($year != "" && $table_name == "overview"){
-	$sql = "SELECT * FROM `overview` WHERE `year` = :year";
-	$stmt = $pdo->prepare($sql);
-    $stmt->execute([
-        'year' => $year,
-    ]);
-	$results = [];
-    while ($item = $stmt->fetchAll()) {
-	    $results[] = $item;
-    }
-}
-else if($year != "" && $month != "" && $table_name == "prediction"){
-	$sql = "SELECT * FROM `prediction` WHERE `year` = :year AND `month` = :month";
-	$stmt = $pdo->prepare($sql);
-    $stmt->execute([
-        'year' => $year,
-        'month' => $month,
-    ]);
-	$results = [];
-    while ($item = $stmt->fetchAll()) {
-	    $results[] = $item;
-    }
-}
-else{
-	$sql = "SELECT * FROM `prediction` WHERE `year` = 2020 AND `month` = 1"; // default?
+	$stmt->execute([
+		'year' => $year,
+	]);
+	$results['overview'] = $stmt->fetchAll();
+}  // if ($year == date("Y"))
 
-    $stmt = $pdo->prepare($sql);
-    $stmt->execute([
-	    'year' => $year,
-    ]);
 
-    $results = [];
-    while ($item = $stmt->fetchAll()) {
-	    $results[] = $item;
-    }
-}
-
+/* Return data */
 echo json_encode([
 	'ok' => true,
-	'result' => [
-		'sqlQuery' => $sqlQuery,
-	]
+	'results' => $results
 ], JSON_PRETTY_PRINT);

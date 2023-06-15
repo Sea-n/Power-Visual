@@ -51,6 +51,7 @@
 				<div class="column">
 					<label for="city">縣市</label>
 					<select id="city" class="ts-select" name="city">
+						<option value="" disabled selected>請選擇縣市</option>
 						<option>台北市</option>
 						<option>基隆市</option>
 						<option>新北市</option>
@@ -86,10 +87,10 @@
 				<div class="column">
 					<label for="choice">搜尋項目</label>
 					<select id="choice" class="ts-select" name="choice">
-						<option>1 各縣市查詢</option>
-						<option>2 產業別查詢</option>
-						<option>3 overview</option>
-						<option>4 prediction</option>
+						<option value="1">各縣市查詢</option>
+						<option value="2">產業別查詢</option>
+						<option value="3">overview</option>
+						<option value="4">prediction</option>
 					</select>
 				</div>
 
