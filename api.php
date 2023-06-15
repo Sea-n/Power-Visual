@@ -27,12 +27,13 @@ $stmt->execute([
 	'city' => $city,
 	'dist' => $dist,
 ]);
-$zipcode = $stmt->fetch()['zipcode'] ?? false;
+$zipcode = $stmt->fetch();
 if (!$zipcode)
 	exit(json_encode([
 		'ok' => false,
 		'msg' => 'Cannot find zipcode.'
 	], JSON_PRETTY_PRINT));
+$zipcode = $zipcode['zipcode'];
 
 /* By type */
 $sql = "SELECT * FROM by_type
@@ -46,6 +47,8 @@ $stmt->execute([
 	'zipcode' => $zipcode,
 ]);
 $results['by_type'] = $stmt->fetchAll();
+if (count($results['by_type']) === 0)
+	unset($results['by_type']);
 
 /* By industry */
 $sql = "SELECT * FROM by_industry
@@ -57,14 +60,14 @@ $stmt->execute([
 	'city' => $city,
 ]);
 $results['by_industry'] = $stmt->fetch();
+if ($results['by_industry'] === false)
+	unset($results['by_industry']);
 
 /* Prediction or Overview */
 if ($year == date("Y")) {  // This year
 	$sql = "SELECT * FROM prediction";
 	$stmt = $pdo->prepare($sql);
-	$stmt->execute([
-		'year' => $year,
-	]);
+	$stmt->execute();
 	$results['prediction'] = $stmt->fetchAll();
 } else {  // Past year
 	$sql = "SELECT * FROM overview WHERE year = :year";
@@ -72,7 +75,9 @@ if ($year == date("Y")) {  // This year
 	$stmt->execute([
 		'year' => $year,
 	]);
-	$results['overview'] = $stmt->fetchAll();
+	$results['overview'] = $stmt->fetch();
+	if ($results['overview'] === false)
+		unset($results['overview']);
 }  // if ($year == date("Y"))
 
 
