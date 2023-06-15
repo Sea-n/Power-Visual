@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+set -Eeuo pipefail
 cd "$(dirname "$0")" || exit 1
 
 if [[ "$#" -ne 1 ]]; then
