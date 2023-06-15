@@ -21,7 +21,7 @@ function fetchApi() {
 	}).then(resp => resp.json())
 	.then((resp) => {
 		if (!resp.ok) {
-			console.error(resp);
+			alert(resp.msg);
 			return;
 		}
 
