@@ -122,13 +122,13 @@
 		
 		<script>
 			while($result = mysqli_fetch_array($r, MYSQLI_ASSOC)){
-				echo "<tr>";
-				echo "<td>".$result['year']."</td>";
-				echo "<td>".$result['month']."</td>";
-				echo "<td>".$result['city']."</td>";
-				echo "<td>".$result['dist']."</td>";
-				echo "<td>".$result['power']."</td>";
-				echo "</tr>";
+				
+				echo $result['year'];
+				echo $result['month'];
+				echo $result['city'];
+				echo $result['dist'];
+				echo $result['power'];
+				
 			}
 
 			if($result == null){
